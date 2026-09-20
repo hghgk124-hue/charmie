@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charmie | Авторские украшения ручной работы</title>
+    <!-- Google Fonts: Cormorant Garamond & Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS CDN for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastelBg: '#FDFBF9',
+                        pastelBlue: '#E6F0FA',
+                        pastelPink: '#FCE8EC',
+                        pastelYellow: '#FEF6E4',
+                        milky: '#F7F4EF',
+                        silverAccent: '#94A3B8',
+                        charcoal: '#2D3748',
+                        softGray: '#718096'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FDFBF9;
+            color: #2D3748;
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .silver-gradient-text {
+            color: #4A5568;
+            font-weight: 500;
+        }
+        /* Custom smooth hover effects */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -10px rgba(148, 163, 184, 0.15);
+        }
+        /* Hide scrollbar for horizontal lists if any */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-pastelPink selection:text-charcoal relative">
+
+    <!-- Top Announcement / Admin Bar Toggle -->
+    <div class="bg-gradient-to-r from-pastelBlue via-pastelPink to-pastelYellow py-2 px-4 text-xs font-medium text-center text-charcoal border-b border-white/50 flex justify-between items-center z-50 relative">
+        <div class="hidden sm:block">✨ Эстетичные украшения ручной работы с душой</div>
+        <div class="mx-auto sm:mx-0 flex items-center space-x-3">
+            <span>Заказ через TikTok директ</span>
+            <span class="text-silverAccent">•</span>
+            <button onclick="toggleAdminModal()" class="text-xs bg-white/80 hover:bg-white text-charcoal px-3 py-1 rounded-full shadow-sm transition font-semibold flex items-center gap-1.5 border border-silverAccent/30">
+                <i class="fa-solid fa-lock text-[10px] text-silverAccent"></i> Режим админа
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-milky shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-full bg-pastelPink flex items-center justify-center text-charcoal font-serif text-xl font-bold shadow-sm group-hover:scale-105 transition">
+                    C
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif text-2xl font-bold tracking-wider text-charcoal">CHARMIE</span>
+                    <span class="text-[10px] tracking-widest text-silverAccent uppercase">Handmade Jewelry</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
+                <a href="#catalog" class="hover:text-silverAccent transition">Каталог</a>
+                <a href="#contact" class="hover:text-silverAccent transition">Контакты</a>
+            </nav>
+
+            <!-- TikTok CTA Header Button -->
+            <div class="flex items-center gap-3">
+                <a href="https://www.tiktok.com/@charmie.jewelry_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" 
+                   class="bg-charcoal text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium tracking-wide shadow-md hover:bg-slate-800 transition flex items-center gap-2 transform active:scale-95">
+                    <i class="fa-brands fa-tiktok text-sm"></i>
+                    <span>Заказать в TikTok</span>
+                </a>
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-charcoal p-2 focus:outline-none">
+                    <i id="mobileMenuIcon" class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden glass-panel border-b border-milky px-6 py-4 space-y-3">
+            <a href="#catalog" onclick="toggleMobileMenu()" class="block text-sm font-medium py-1 hover:text-silverAccent">Каталог</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block text-sm font-medium py-1 hover:text-silverAccent">Контакты</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-16 pb-24 md:pt-24 md:pb-32 overflow-hidden bg-gradient-to-b from-pastelBlue/30 via-pastelPink/20 to-pastelBg">
+        <!-- Decorative pastel blobs -->
+        <div class="absolute top-10 left-1/2 -translate-x-1/2 w-96 h-96 bg-pastelPink/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
+        <div class="absolute bottom-0 right-10 w-80 h-80 bg-pastelYellow/50 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <span class="inline-block py-1 px-4 rounded-full bg-white/80 border border-pastelBlue text-xs tracking-widest text-silverAccent uppercase mb-6 shadow-sm">
+                ✨ Эксклюзивная ручная работа
+            </span>
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-charcoal max-w-4xl mx-auto leading-tight mb-6">
+                Подчеркните вашу индивидуальность с <span class="silver-gradient-text italic font-normal">Charmie</span>
+            </h1>
+            <p class="text-base sm:text-lg text-softGray max-w-2xl mx-auto font-light leading-relaxed mb-10">
+                Нежные колье, изящные браслеты и авторские украшения, созданные с любовью и вниманием к каждой детали.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#catalog" class="w-full sm:w-auto bg-white hover:bg-milky text-charcoal border border-silverAccent/30 px-8 py-3.5 rounded-full text-sm font-medium transition shadow-sm">
+                    Смотреть каталог
+                </a>
+                <a href="https://www.tiktok.com/@charmie.jewelry_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" 
+                   class="w-full sm:w-auto bg-charcoal hover:bg-slate-800 text-white px-8 py-3.5 rounded-full text-sm font-medium transition shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-tiktok"></i> Перейти в TikTok
+                </a>
+            </div>
+
+            <!-- Stats / Highlights -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto mt-20 pt-12 border-t border-silverAccent/20">
+                <div class="text-center">
+                    <div class="font-serif text-3xl font-semibold text-charcoal">100%</div>
+                    <div class="text-xs text-softGray mt-1 uppercase tracking-wider">Ручная работа</div>
+                </div>
+                <div class="text-center">
+                    <div class="font-serif text-3xl font-semibold text-charcoal">Премиум</div>
+                    <div class="text-xs text-softGray mt-1 uppercase tracking-wider">Фурнитура</div>
+                </div>
+                <div class="text-center col-span-2 md:col-span-1">
+                    <div class="font-serif text-3xl font-semibold text-charcoal">TikTok</div>
+                    <div class="text-xs text-softGray mt-1 uppercase tracking-wider">Заказ в директ</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Catalog Section -->
+    <section id="catalog" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-xs tracking-widest text-silverAccent uppercase font-medium">Коллекция украшений</span>
+            <h2 class="font-serif text-3xl sm:text-5xl font-semibold text-charcoal mt-2">Каталог изделий</h2>
+            <div class="w-16 h-0.5 bg-silverAccent/40 mx-auto mt-4"></div>
+            <p class="text-softGray text-sm mt-4 font-light">Выберите украшение, которое откликается в вашем сердце, и оформите заказ через TikTok.</p>
+        </div>
+
+        <!-- Filter / Admin Quick Bar -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+            <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0">
+                <button onclick="filterCatalog('all')" id="filter-all" class="filter-btn active bg-charcoal text-white px-4 py-2 rounded-full text-xs font-medium transition shadow-sm">Все</button>
+                <button onclick="filterCatalog('bracelet')" id="filter-bracelet" class="filter-btn bg-white text-charcoal border border-silverAccent/30 px-4 py-2 rounded-full text-xs font-medium transition hover:bg-milky">Браслеты</button>
+                <button onclick="filterCatalog('necklace')" id="filter-necklace" class="filter-btn bg-white text-charcoal border border-silverAccent/30 px-4 py-2 rounded-full text-xs font-medium transition hover:bg-milky">Колье</button>
+                <button onclick="filterCatalog('keychain')" id="filter-keychain" class="filter-btn bg-white text-charcoal border border-silverAccent/30 px-4 py-2 rounded-full text-xs font-medium transition hover:bg-milky">Брелоки</button>
+            </div>
+            <div id="adminQuickAddContainer" class="hidden">
+                <button onclick="openAddModal()" class="bg-pastelPink hover:bg-pink-100 text-charcoal border border-pink-200 px-4 py-2 rounded-full text-xs font-semibold shadow-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-plus text-pink-500"></i> Добавить украшение (Админ)
+                </button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+    </section>
+
+    <!-- About Master Section & Reviews Section removed per request -->
+
+    <!-- Contact & TikTok Banner Footer -->
+    <section id="contact" class="py-20 bg-gradient-to-r from-pastelPink/30 via-pastelBlue/30 to-pastelYellow/30 border-t border-stone-200/50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center mx-auto mb-6 text-charcoal text-xl">
+                <i class="fa-brands fa-tiktok"></i>
+            </div>
+            <h2 class="font-serif text-3xl sm:text-5xl font-semibold text-charcoal mb-4">Готовы выбрать украшение?</h2>
+            <p class="text-softGray text-base max-w-xl mx-auto font-light mb-8">
+                Переходите в наш TikTok профиль, смотрите видео новинок и пишите в директ для заказа и консультации.
+            </p>
+            <a href="https://www.tiktok.com/@charmie.jewelry_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" 
+               class="inline-flex items-center gap-3 bg-charcoal hover:bg-slate-800 text-white px-8 py-4 rounded-full text-base font-medium transition shadow-xl transform hover:-translate-y-1">
+                <i class="fa-brands fa-tiktok text-xl"></i>
+                <span>Заказать в TikTok (@charmie.jewelry_)</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-12 border-t border-stone-200/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-pastelPink flex items-center justify-center text-charcoal font-serif font-bold">
+                    C
+                </div>
+                <span class="font-serif text-xl font-bold tracking-wider text-charcoal">CHARMIE</span>
+            </div>
+            <div class="text-xs text-softGray text-center md:text-left">
+                © 2026 Charmie. Все права защищены. Авторские украшения ручной работы.
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="https://www.tiktok.com/@charmie.jewelry_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" 
+                   class="w-9 h-9 rounded-full bg-milky flex items-center justify-center text-charcoal hover:bg-pastelPink transition">
+                    <i class="fa-brands fa-tiktok text-sm"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel bg-white/95 p-8 rounded-3xl max-w-md w-full shadow-2xl border border-white relative animate-in fade-in zoom-in duration-200">
+            <button onclick="toggleAdminModal()" class="absolute top-4 right-4 text-softGray hover:text-charcoal p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-pastelBlue rounded-full flex items-center justify-center mx-auto mb-3 text-charcoal text-lg">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-semibold text-charcoal">Вход для администратора</h3>
+                <p class="text-xs text-softGray mt-1">Введите PIN-код для управления сайтом (по умолчанию: <span class="font-semibold text-charcoal">ela124</span>)</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-softGray mb-1 uppercase tracking-wider">PIN-код</label>
+                    <input type="password" id="adminPinInput" placeholder="••••" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-silverAccent text-center tracking-widest text-lg font-semibold">
+                </div>
+                <button onclick="verifyAdminPin()" class="w-full bg-charcoal hover:bg-slate-800 text-white py-3 rounded-xl text-sm font-medium transition shadow-md">
+                    Войти в режим админа
+                </button>
+                <div id="adminLoginError" class="text-xs text-rose-500 text-center hidden">Неверный PIN-код. Попробуйте 1234</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Add Product Modal -->
+    <div id="addProductModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel bg-white/95 p-8 rounded-3xl max-w-lg w-full shadow-2xl border border-white relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeAddModal()" class="absolute top-4 right-4 text-softGray hover:text-charcoal p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center mb-6">
+                <h3 class="font-serif text-2xl font-semibold text-charcoal">Добавить новое украшение</h3>
+                <p class="text-xs text-softGray mt-1">Заполните данные для создания карточки товара</p>
+            </div>
+            <form id="addProductForm" onsubmit="handleAddNewProduct(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-softGray mb-1 uppercase tracking-wider">Название украшения</label>
+                    <input type="text" id="newTitle" required placeholder="например, Браслет 'Аврора'" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-silverAccent text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-softGray mb-1 uppercase tracking-wider">Категория</label>
+                        <select id="newCategory" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-silverAccent text-sm">
+                            <option value="bracelet">Браслет</option>
+                            <option value="necklace">Колье</option>
+                            <option value="keychain">Брелок</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-softGray mb-1 uppercase tracking-wider">Цена ₸</label>
+                        <input type="text" id="newPrice" required placeholder="напр. от ₸" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-silverAccent text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-softGray mb-1 uppercase tracking-wider">Фотография</label>
+                    <div class="space-y-2">
+                        <select id="newImagePreset" onchange="handleImagePresetChange()" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-silverAccent text-sm">
+                            <option value="imgs/1.png">Фото из папки imgs/1.png</option>
+                            <option value="imgs/2.png">Фото из папки imgs/2.png</option>
+                            <option value="imgs/3.png">Фото из папки imgs/3.png</option>
+                            <option value="imgs/4.png">Фото из папки imgs/4.png</option>
+                            <option value="imgs/5.png">Фото из папки imgs/5.png</option>
+                            <option value="imgs/6.png">Фото из папки imgs/6.png</option>
+                            <option value="imgs/7.png">Фото из папки imgs/7.png</option>
+                            <option value="imgs/8.png">Фото из папки imgs/8.png</option>
+                            <option value="imgs/9.png">Фото из папки imgs/9.png</option>
+                            <option value="imgs/10.png">Фото из папки imgs/10.png</option>
+                            <option value="imgs/11.png">Фото из папки imgs/11.png</option>
+                            <option value="imgs/12.png">Фото из папки imgs/12.png</option>
+                            <option value="custom">Свой URL или загрузка файла...</option>
+                        </select>
+                        <input type="text" id="newImage" placeholder="или введите путь/URL картинки" class="w-full px-4 py-2 rounded-xl border border-stone-200 bg-white/80 text-xs hidden">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-softGray mb-1 uppercase tracking-wider">Описание</label>
+                    <textarea id="newDesc" rows="2" placeholder="Краткое описание материалов и особенностей" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-silverAccent text-sm"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-charcoal hover:bg-slate-800 text-white py-3 rounded-xl text-sm font-medium transition shadow-md">
+                    Опубликовать украшение
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Edit Product Modal -->
+    <div id="editProductModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel bg-white/95 p-8 rounded-3xl max-w-lg w-full shadow-2xl border border-white relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeEditModal()" class="absolute top-4 right-4 text-softGray hover:text-charcoal p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center mb-6">
+                <h3 class="font-serif text-2xl font-semibold text-charcoal">Редактировать товар</h3>
+                <p class="text-xs text-softGray mt-1">Измените название, цену или описание</p>
+            </div>
+            <form id="editProductForm" onsubmit="handleSaveEditedProduct(event)" class="space-y-4">
+                <input type="hidden" id="editIndex">
+                <div>
+                    <label class="block text-xs font-medium text-softGray mb-1 uppercase tracking-wider">Название украшения</label>
+                    <input type="text" id="editTitle" required class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-silverAccent text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-softGray mb-1 uppercase tracking-wider">Категория</label>
+                        <select id="editCategory" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-silverAccent text-sm">
+                            <option value="bracelet">Браслет</option>
+                            <option value="necklace">Колье</option>
+                            <option value="keychain">Брелок</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-softGray mb-1 uppercase tracking-wider">Цена </label>
+                        <input type="text" id="editPrice" required class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-silverAccent text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-softGray mb-1 uppercase tracking-wider">Описание</label>
+                    <textarea id="editDesc" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-silverAccent text-sm"></textarea>
+                </div>
+                <div class="flex gap-3">
+                    <button type="button" onclick="handleDeleteProduct()" class="w-1/3 bg-rose-100 hover:bg-rose-200 text-rose-700 py-3 rounded-xl text-sm font-medium transition">
+                        Удалить
+                    </button>
+                    <button type="submit" class="w-2/3 bg-charcoal hover:bg-slate-800 text-white py-3 rounded-xl text-sm font-medium transition shadow-md">
+                        Сохранить изменения
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Status Banner (Floating) -->
+    <div id="adminStatusBar" class="fixed bottom-6 right-6 z-40 hidden bg-charcoal text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700">
+        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
+        <span class="text-xs font-medium">Режим администратора активен</span>
+        <button onclick="logoutAdmin()" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-lg transition ml-2">Выйти</button>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Initial Default Products mapping the 12 images in imgs/
+        const defaultProducts = [
+            { id: 1, title: '48291', category: 'bracelet', price: '0 ₸', image: 'imgs/1.png', desc: ' ' },
+            { id: 2, title: '93842', category: 'necklace', price: '0 ₸', image: 'imgs/2.png', desc: ' ' },
+            { id: 3, title: '50193', category: 'keychain', price: '0 ₸', image: 'imgs/3.png', desc: ' ' },
+            { id: 4, title: '74820', category: 'bracelet', price: '0 ₸', image: 'imgs/4.png', desc: ' ' },
+            { id: 5, title: '10928', category: 'necklace', price: '0 ₸', image: 'imgs/5.png', desc: ' ' },
+            { id: 6, title: '83920', category: 'bracelet', price: '0 ₸', image: 'imgs/6.png', desc: ' ' },
+            { id: 7, title: '38401', category: 'keychain', price: '0 ₸', image: 'imgs/7.png', desc: ' ' },
+            { id: 8, title: '62910', category: 'necklace', price: '0 ₸', image: 'imgs/8.png', desc: ' ' },
+            { id: 9, title: '19483', category: 'bracelet', price: '0 ₸', image: 'imgs/9.png', desc: ' ' },
+            { id: 10, title: '57302', category: 'necklace', price: '0 ₸', image: 'imgs/10.png', desc: ' ' },
+            { id: 11, title: '92041', category: 'keychain', price: '0 ₸', image: 'imgs/11.png', desc: ' ' },
+            { id: 12, title: '31849', category: 'bracelet', price: '0 ₸', image: 'imgs/12.png', desc: ' ' }
+        ];
+
+        let currentFilter = 'all';
+        let isAdmin = localStorage.getItem('charmie_admin') === 'true';
+
+        // Load products from localStorage or default
+        function getProducts() {
+            localStorage.removeItem('charmie_products');
+            const saved = localStorage.getItem('charmie_products');
+            if (saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch (e) {
+                    return defaultProducts;
+                }
+            }
+            return defaultProducts;
+        }
+
+        function saveProducts(products) {
+            localStorage.setItem('charmie_products', JSON.stringify(products));
+        }
+
+        // Render Catalog
+        function renderCatalog() {
+            const products = getProducts();
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            const filtered = currentFilter === 'all' 
+                ? products 
+                : products.filter(p => p.category === currentFilter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-16 text-softGray">
+                        <i class="fa-solid fa-gem text-4xl mb-3 text-silverAccent"></i>
+                        <p class="font-serif text-xl">В этой категории пока нет украшений</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach((product, originalIndex) => {
+                // Find actual index in full array for editing
+                const actualIndex = products.findIndex(p => p.id === product.id);
+                
+                const card = document.createElement('div');
+                card.className = 'glass-panel rounded-3xl overflow-hidden shadow-sm border border-white/80 card-hover flex flex-col justify-between relative group';
+                
+                const editButtonHtml = isAdmin ? `
+                    <button onclick="openEditModal(${actualIndex})" class="absolute top-3 right-3 bg-white/90 hover:bg-white text-charcoal w-9 h-9 rounded-full shadow-md flex items-center justify-center transition z-20 border border-silverAccent/30" title="Редактировать товар">
+                        <i class="fa-solid fa-pen text-xs"></i>
+                    </button>
+                ` : '';
+
+                card.innerHTML = `
+                    ${editButtonHtml}
+                    <div class="aspect-square bg-milky relative overflow-hidden flex items-center justify-center p-2">
+                        <img src="${product.image}" alt="${product.title}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-500" onerror="this.src='imgs/1.png'">
+                        <div class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-charcoal shadow-sm border border-stone-200/50">
+                            ${product.price}
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-serif text-lg font-semibold text-charcoal mb-3 text-center">${product.title}</h3>
+                        </div>
+                        <a href="https://www.tiktok.com/@charmie.jewelry_?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer"
+                           class="w-full bg-pastelPink/60 hover:bg-charcoal hover:text-white text-charcoal py-2.5 rounded-xl text-xs font-medium transition text-center flex items-center justify-center gap-2 border border-pink-200/50">
+                            <i class="fa-brands fa-tiktok"></i> Заказать в TikTok
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            updateAdminUI();
+        }
+
+        // Filter Catalog
+        function filterCatalog(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-charcoal', 'text-white');
+                btn.classList.add('bg-white', 'text-charcoal');
+            });
+            const activeBtn = document.getElementById(`filter-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-white', 'text-charcoal');
+                activeBtn.classList.add('bg-charcoal', 'text-white');
+            }
+            renderCatalog();
+        }
+
+        // Admin Auth & UI State
+        function toggleAdminModal() {
+            if (isAdmin) {
+                logoutAdmin();
+                return;
+            }
+            const modal = document.getElementById('adminModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function verifyAdminPin() {
+            const pin = document.getElementById('adminPinInput').value;
+            const errorEl = document.getElementById('adminLoginError');
+            if (pin === 'ela124') {
+                isAdmin = true;
+                localStorage.setItem('charmie_admin', 'true');
+                document.getElementById('adminModal').classList.add('hidden');
+                document.getElementById('adminPinInput').value = '';
+                errorEl.classList.add('hidden');
+                updateAdminUI();
+                renderCatalog();
+            } else {
+                errorEl.textContent = 'Неверный PIN-код. Попробуйте ela124';
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdmin = false;
+            localStorage.setItem('charmie_admin', 'false');
+            updateAdminUI();
+            renderCatalog();
+        }
+
+        function updateAdminUI() {
+            const adminBar = document.getElementById('adminStatusBar');
+            const addContainer = document.getElementById('adminQuickAddContainer');
+            if (isAdmin) {
+                adminBar.classList.remove('hidden');
+                addContainer.classList.remove('hidden');
+            } else {
+                adminBar.classList.add('hidden');
+                addContainer.classList.add('hidden');
+            }
+        }
+
+        // Add Product Modals
+        function openAddModal() {
+            document.getElementById('addProductModal').classList.remove('hidden');
+        }
+        function closeAddModal() {
+            document.getElementById('addProductModal').classList.add('hidden');
+            document.getElementById('addProductForm').reset();
+            document.getElementById('newImage').classList.add('hidden');
+        }
+
+        function handleImagePresetChange() {
+            const val = document.getElementById('newImagePreset').value;
+            const customInput = document.getElementById('newImage');
+            if (val === 'custom') {
+                customInput.classList.remove('hidden');
+                customInput.required = true;
+            } else {
+                customInput.classList.add('hidden');
+                customInput.required = false;
+            }
+        }
+
+        function handleAddNewProduct(e) {
+            e.preventDefault();
+            const title = document.getElementById('newTitle').value;
+            const category = document.getElementById('newCategory').value;
+            const price = document.getElementById('newPrice').value;
+            const presetVal = document.getElementById('newImagePreset').value;
+            const customVal = document.getElementById('newImage').value;
+            const image = presetVal === 'custom' ? customVal : presetVal;
+            const desc = document.getElementById('newDesc').value;
+
+            const products = getProducts();
+            const newProduct = {
+                id: Date.now(),
+                title,
+                category,
+                price,
+                image: image || 'imgs/1.png',
+                desc
+            };
+
+            products.unshift(newProduct);
+            saveProducts(products);
+            closeAddModal();
+            renderCatalog();
+        }
+
+        // Edit Product Modals
+        function openEditModal(index) {
+            const products = getProducts();
+            const product = products[index];
+            if (!product) return;
+
+            document.getElementById('editIndex').value = index;
+            document.getElementById('editTitle').value = product.title;
+            document.getElementById('editCategory').value = product.category;
+            document.getElementById('editPrice').value = product.price;
+            document.getElementById('editDesc').value = product.desc || '';
+
+            document.getElementById('editProductModal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editProductModal').classList.add('hidden');
+        }
+
+        function handleSaveEditedProduct(e) {
+            e.preventDefault();
+            const index = parseInt(document.getElementById('editIndex').value);
+            const products = getProducts();
+
+            if (products[index]) {
+                products[index].title = document.getElementById('editTitle').value;
+                products[index].category = document.getElementById('editCategory').value;
+                products[index].price = document.getElementById('editPrice').value;
+                products[index].desc = document.getElementById('editDesc').value;
+
+                saveProducts(products);
+                closeEditModal();
+                renderCatalog();
+            }
+        }
+
+        function handleDeleteProduct() {
+            if (!confirm('Вы уверены, что хотите удалить это украшение?')) return;
+            const index = parseInt(document.getElementById('editIndex').value);
+            const products = getProducts();
+
+            if (!isNaN(index) && products[index]) {
+                products.splice(index, 1);
+                saveProducts(products);
+                closeEditModal();
+                renderCatalog();
+            }
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            menu.classList.toggle('hidden');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-xmark');
+        }
+
+        // Initialize on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCatalog();
+        });
+    </script>
+</body>
+</html>
